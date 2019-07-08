@@ -136,7 +136,37 @@ escala_escolhida_com_notas <- escala_escolhida %>%
 
 notas_musica_na_escala_escolhida <- notas_musica %>% 
     mutate(note_abs = note %% 12) %>% 
-    left_join(escala_escolhida_com_notas, by = c("note_abs" = "nota_no_tom"))     
+    left_join(escala_escolhida_com_notas, by = c("note_abs" = "nota_no_tom")) %>% 
+    mutate(grau = if_else(is.na(grau), as.integer(0), grau))
+
+
+intervalos_possiveis <- tibble(origem = 0:8) %>% 
+    crossing(destino = 0:8) %>% 
+    mutate(nome_intervalo = paste0(origem,"-", destino) )
+
+
+frequencia_graus <- notas_musica_na_escala_escolhida %>% 
+    group_by(grau) %>% 
+    summarise(n = n(), tempo = sum(length)) %>%         
+    mutate(n = n / sum(n), tempo = tempo /sum(tempo)) 
+
+frequencia_intervalos <-  notas_musica_na_escala_escolhida %>% 
+    arrange(time) %>% 
+    mutate( destino = grau, origem = lag(grau), length_origem = lag(length)) %>% 
+    left_join(intervalos_possiveis) %>% 
+    group_by(nome_intervalo) %>% 
+    summarise(n = n(), tempo = sum(length)) %>%         
+    mutate(n = n / sum(n), tempo = tempo /sum(tempo)) 
+
+    
+desvio_padrao_duracao_notas <- notas_musica_na_escala_escolhida %>% 
+    summarise(dp_duracao = sd(length)/mean(length) )
+
+
+
+desvio_padrao_intensidade_notas <- notas_musica_na_escala_escolhida %>%
+    summarise(dp_intensidade = sd(velocity)/mean(velocity)) %T>%
+    View()
 
 
 
