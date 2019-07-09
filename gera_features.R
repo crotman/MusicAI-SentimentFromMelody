@@ -165,36 +165,27 @@ desvio_padrao_duracao_notas <- notas_musica_na_escala_escolhida %>%
 
 
 desvio_padrao_intensidade_notas <- notas_musica_na_escala_escolhida %>%
-    summarise(dp_intensidade = sd(velocity)/mean(velocity)) %T>%
-    View()
+    summarise(dp_intensidade = sd(velocity)/mean(velocity))
+
+
+
+amplitude_melodia <- max(notas_musica_na_escala_escolhida$note) - min(notas_musica_na_escala_escolhida$note)
+
+
+
 
 
 
 #escala
-#frequencia dos graus unidade
-#frequencia dos graus em tempo
-#frequencia dos intervalos
-#frequencia dos intervalos em tempo
-#media da duracao das notas
-#desvio padrao da duracao das notas
-#desvio padrao da "velocidade"
+#frequencia dos graus unidadex
+#frequencia dos graus em tempox
+#frequencia dos intervalosx
+#frequencia dos intervalos em tempox
+#media da duracao das notasx
+#desvio padrao da duracao das notasx
+#desvio padrao da "velocidade"x
 #velocidade media de mudanca das notas
 #amplitude da melodia
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
